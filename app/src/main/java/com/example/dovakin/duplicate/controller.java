@@ -79,7 +79,7 @@ public class controller {
                 L.get(n).setClick(true);
                 GA.adapted();
                 countTap++;
-
+ 
                 GA.setTextTapView(countTap.toString());
                 if (c > 0) {
                     boolean p = true;
