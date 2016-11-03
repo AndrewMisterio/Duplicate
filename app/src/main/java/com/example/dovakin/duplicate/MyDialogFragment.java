@@ -21,6 +21,7 @@ public class MyDialogFragment extends DialogFragment {
     public void setResult(String res){
         result=res;
     }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -6,6 +6,8 @@ import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class GameActivity extends Activity {
     Handler handler,handlerBar;
     controller CTRL;
     TextView tapView;
+    List<Bitmap> icon = new ArrayList<>();
 
     boolean exit=false;
     MyDialogFragment myDialogFragment;
@@ -42,9 +45,17 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         load();
+
+        int x=176,y=203;
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.dota);
+        icon.add(Bitmap.createBitmap(b, 0, 0, x - 2, y));
+        for(int n=0;n<10;n++)
+            for(int m=0;m<10;m++) {
+                icon.add(Bitmap.createBitmap(b, x * n, y * (m+1), x - 2, y));
+            }
         CTRL = new controller(this,counter,countDuplicate, gmstl);
         tA=new tileAdapter(this, CTRL.getL());
-
+        tA.setUnknownItem(getImage(0));
         tapView=(TextView) findViewById(R.id.viewTap);
         gridView = (GridView) findViewById(R.id.gw);
         gridView.setNumColumns(CTRL.getColumn());
@@ -56,7 +67,7 @@ public class GameActivity extends Activity {
                                     int position, long id) {
                 // TODO Auto-generated method stub
                 CTRL.checkList(position);
-            }
+                }
         });
         handler = new Handler() {
             public void handleMessage(Message msg) {
@@ -86,6 +97,9 @@ public class GameActivity extends Activity {
 
         myDialogFragment = new MyDialogFragment();
         myDialogFragment.setActivity(this);
+    }
+    public Bitmap getImage(int n){
+        return icon.get(n);
     }
     public void setColumn(Integer c){column=c;}
 

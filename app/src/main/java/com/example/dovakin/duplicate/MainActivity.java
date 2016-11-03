@@ -1,6 +1,8 @@
 package com.example.dovakin.duplicate;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,11 +22,15 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sPref;
     Spinner spinner1,spinner2,spinner3;
+    ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        image = (ImageView) findViewById(R.id.imageView);
+        image.setImageBitmap(getImage(0,0));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.size));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
         });
         load();
     }
+    private Bitmap getImage(int n,int m){
+        int x=176,y=203;
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.dota);
+        return Bitmap.createBitmap(b, x*n, y*m, x-2, y);
+    }
     public void onClickStart(View v){
         save();
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
@@ -95,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void load(){
         sPref = getSharedPreferences("OPTION", MODE_PRIVATE);
+        if(sPref.contains("OPTION")){
         spinner1.setSelection(Integer.parseInt(sPref.getString("sizeGrid", "")));
-        spinner2.setSelection(Integer.parseInt(sPref.getString("counterDuplicate", "")));
+        spinner2.setSelection(Integer.parseInt(sPref.getString("counterDuplicate", "")));}
 
     }
     @Override

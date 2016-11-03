@@ -1,5 +1,7 @@
 package com.example.dovakin.duplicate;
 
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -13,12 +15,12 @@ import java.util.Random;
 public class controller {
 
     private GameActivity GA;
-    private Integer size[][] = {{8,12,20},{15,24,36},{16,48,64}};     //packs size countDuplicate {{2}{3}{4}}
+    private Integer size[][] = {{8,12,20},{9,15,24},{12,16,48}};     //packs size countDuplicate {{2}{3}{4}}
     private Integer cS=1;//count for size
     private List<tile> L= new ArrayList<>();
     private Integer countDuplicate=2;
 
-    private Integer countTap=0, valuetimeout=0;
+    private Integer countTap=0;
     private Integer gameStyle=0; //gamestyle
 
     boolean enebleThread = false;
@@ -27,13 +29,19 @@ public class controller {
         enebleThread=p;
     }
 
+    public Integer optimalTime(){
+        return 8000*(cS+countDuplicate);
+    }
+    public Integer optimalTaps(){return (int)(size[countDuplicate-2][cS]*2*0.875);}
+
+    public int getCountTap(){return countTap;}
     controller (GameActivity g, Integer s,int cD, Integer gs){
         gameStyle = gs;
         GA=g;
         countDuplicate=cD+2;
         setSize(s);
     }
-    void setSize(Integer s){cS=s;createList();}
+    private void setSize(Integer s){cS=s;createList();}
 
     public Integer getColumn(){return (int)Math.sqrt(size[countDuplicate-2][cS]);}
 
@@ -43,7 +51,22 @@ public class controller {
         L.clear();
         for (int i = 0; i < size[countDuplicate-2][cS]; i++)
             L.add(new tile("" + (int)(i / countDuplicate)));
-        mixList();
+        List<Bitmap> B = new ArrayList<>();
+        String str = "";
+        Integer j;
+        final Random random = new Random();
+        B.clear();
+        for(int i=0;i<(size[countDuplicate-2][cS]/countDuplicate);i++){
+            do{
+                j=Math.abs(random.nextInt()%100);
+            }while (str.contains(""+j));
+            str+=j.toString()+"|";
+            Log.i("str",str);
+            B.add(GA.getImage(j));
+        }
+        for (int i = 0; i < size[countDuplicate-2][cS]; i++)
+            L.get(i).setImage(B.get(Integer.parseInt(L.get(i).getText())));
+        //mixList();
     }
 
     public void checkList(Integer n){
@@ -55,6 +78,9 @@ public class controller {
             if(c<countDuplicate&&!enebleThread) {
                 L.get(n).setClick(true);
                 GA.adapted();
+                countTap++;
+
+                GA.setTextTapView(countTap.toString());
                 if (c > 0) {
                     boolean p = true;
                     for (int i = 0; i < size[countDuplicate - 2][cS]; i++) {
@@ -72,6 +98,9 @@ public class controller {
                                 win();
                             }
                         }
+                    }
+                    if(countTap>=optimalTaps()&&GA.gmstl==2){
+                        GA.dialog(GA.getResources().getString(R.string.youlose)+"  "+ getCountTap()+"/"+optimalTaps());
                     }
                     if(!p){ GA.replGrid(500); setEnebleThread(true);}
                 }
@@ -102,7 +131,7 @@ public class controller {
         for(int i=0;i<size[countDuplicate-2][cS];i++){
             p=p&&L.get(i).getFound();
         }
-        if(p) GA.dialog(GA.getResources().getString(R.string.youwin));
+        if(p) GA.dialog(GA.getResources().getString(R.string.youwin)+""+ countTap);
     }
 
 }

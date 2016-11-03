@@ -1,12 +1,15 @@
 package com.example.dovakin.duplicate;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,8 @@ public class tileAdapter extends BaseAdapter {
     private Context context;
     private List<tile> products;
     private View item;
+    private Bitmap image;
+    private ImageView im;
 
     public tileAdapter(Context context, List<tile> products) {
         this.context = context;
@@ -36,6 +41,8 @@ public class tileAdapter extends BaseAdapter {
         return products.get(position);
     }
 
+    public void setUnknownItem(Bitmap i){image=i;}
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -48,11 +55,17 @@ public class tileAdapter extends BaseAdapter {
             item = new View(context);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             item = inflater.inflate(R.layout.tile, parent, false);
-            ((TextView) item.findViewById(R.id.textView)).setText((products.get(position).getClick())?products.get(position).getText():"?");
-            if(products.get(position).getFound()) {
-                ((TextView) item.findViewById(R.id.textView)).setText(products.get(position).getText());
-                ((TextView) item.findViewById(R.id.textView)).setTextColor(Color.GRAY);
+            im = (ImageView)item.findViewById(R.id.imageView3);
+            if(products.get(position).getClick()){
+                im.setImageBitmap(products.get(position).getImage());
             }
+            else {
+                im.setImageBitmap(image);
+            }
+            if(products.get(position).getFound()) {
+                im.setVisibility(View.INVISIBLE);
+            }
+            im.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             item = (View) convertView;
         }
