@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Duplicate</string>
+    <string name="button_start">START</string>
+    <string-array name="size">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="duplicate">
+        <item>Couple</item>
+        <item>Trio</item>
+        <item>Quartet</item>
+    </string-array>
+    <string name="complexity">Complexity</string>
+    <string name="countDuplicate">Number of identical</string>
+    <string-array name="gamestyle">
+        <item>Normal</item>
+        <item>During</item>
+        <item>Amount</item>
+    </string-array>
+    <string name="gamestyle">Game style</string>
+    <string name="gameover">Game Over</string>
+    <string name="youwin">You WIN!</string>
+    <string name="youlose">You LOSE!</string>
+    <string name="again">Again</string>
+    <string name="exit">Exit</string>
+</resources>
