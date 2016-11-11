@@ -34,20 +34,21 @@ public class controller {
     }
     public Integer optimalTaps(){return (int)(size[countDuplicate-2][cS]*2*0.875);}
 
+    public String getSize(){return size[countDuplicate-2][cS].toString();}
+
     public int getCountTap(){return countTap;}
     controller (GameActivity g, Integer s,int cD, Integer gs){
         gameStyle = gs;
         GA=g;
         countDuplicate=cD+2;
-        setSize(s);
+        cS=s;
     }
-    private void setSize(Integer s){cS=s;createList();}
-
+    public Integer getRow(){return size[countDuplicate-2][cS]/getColumn();}
     public Integer getColumn(){return (int)Math.sqrt(size[countDuplicate-2][cS]);}
 
     public List getL(){return L;}
 
-    void createList(){
+    public void createList(){
         L.clear();
         for (int i = 0; i < size[countDuplicate-2][cS]; i++)
             L.add(new tile("" + (int)(i / countDuplicate)));
@@ -58,15 +59,15 @@ public class controller {
         B.clear();
         for(int i=0;i<(size[countDuplicate-2][cS]/countDuplicate);i++){
             do{
-                j=Math.abs(random.nextInt()%100);
+                j=Math.abs(random.nextInt()%100)+1;
             }while (str.contains(""+j));
             str+=j.toString()+"|";
-            Log.i("str",str);
+            //Log.i("str",str);
             B.add(GA.getImage(j));
         }
         for (int i = 0; i < size[countDuplicate-2][cS]; i++)
             L.get(i).setImage(B.get(Integer.parseInt(L.get(i).getText())));
-        //mixList();
+        mixList();
     }
 
     public void checkList(Integer n){
@@ -79,7 +80,7 @@ public class controller {
                 L.get(n).setClick(true);
                 GA.adapted();
                 countTap++;
- 
+
                 GA.setTextTapView(countTap.toString());
                 if (c > 0) {
                     boolean p = true;

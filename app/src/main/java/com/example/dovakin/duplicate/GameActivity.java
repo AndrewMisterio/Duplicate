@@ -6,14 +6,18 @@ import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
@@ -22,6 +26,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class GameActivity extends Activity {
 
@@ -34,11 +40,13 @@ public class GameActivity extends Activity {
     Handler handler,handlerBar;
     controller CTRL;
     TextView tapView;
-    List<Bitmap> icon = new ArrayList<>();
+    static List<Bitmap> icon = new ArrayList<>();
 
     boolean exit=false;
     MyDialogFragment myDialogFragment;
     int threadcount=0;
+
+    GridLayout gl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +54,20 @@ public class GameActivity extends Activity {
         setContentView(R.layout.activity_game);
         load();
 
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         int x=176,y=203;
         Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.dota);
-        icon.add(Bitmap.createBitmap(b, 0, 0, x - 2, y));
+
+        CTRL = new controller(this,counter,countDuplicate, gmstl);
+        icon.clear();
+        icon.add(bitmapResize(Bitmap.createBitmap(b, 0, 0, x - 2, y),(float)(CTRL.getRow())));
         for(int n=0;n<10;n++)
             for(int m=0;m<10;m++) {
-                icon.add(Bitmap.createBitmap(b, x * n, y * (m+1), x - 2, y));
+                icon.add(bitmapResize(Bitmap.createBitmap(b, x * n, y * (m+1), x - 2, y),(float)(CTRL.getRow())));
             }
-        CTRL = new controller(this,counter,countDuplicate, gmstl);
+        Log.i("y",""+CTRL.getRow());
+        CTRL.createList();
         tA=new tileAdapter(this, CTRL.getL());
         tA.setUnknownItem(getImage(0));
         tapView=(TextView) findViewById(R.id.viewTap);
@@ -97,6 +111,25 @@ public class GameActivity extends Activity {
 
         myDialogFragment = new MyDialogFragment();
         myDialogFragment.setActivity(this);
+    }
+    public Bitmap bitmapResize(Bitmap imageBitmap, float scale) {
+
+        Bitmap bitmap = imageBitmap;
+        float lengthbmp = bitmap.getHeight();
+        float widthbmp = bitmap.getWidth();
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+        float hight = (float)(displaymetrics.heightPixels*0.95f) / scale;
+        Log.i("scale",""+CTRL.getSize());
+        float width = widthbmp/(lengthbmp/hight);
+
+        int convertHighet = (int) hight, convertWidth = (int) width;
+
+        bitmap = Bitmap.createScaledBitmap(bitmap, convertWidth, convertHighet, true);
+
+        return bitmap;
     }
     public Bitmap getImage(int n){
         return icon.get(n);

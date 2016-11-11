@@ -2,16 +2,11 @@ package com.example.dovakin.duplicate;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -53,7 +48,7 @@ public class tileAdapter extends BaseAdapter {
 
         if (convertView == null) {
             item = new View(context);
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE );
             item = inflater.inflate(R.layout.tile, parent, false);
             im = (ImageView)item.findViewById(R.id.imageView3);
             if(products.get(position).getClick()){
@@ -62,6 +57,7 @@ public class tileAdapter extends BaseAdapter {
             else {
                 im.setImageBitmap(image);
             }
+
             if(products.get(position).getFound()) {
                 im.setVisibility(View.INVISIBLE);
             }
