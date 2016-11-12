@@ -110,7 +110,7 @@ public class controller {
     }
     public void closeAll(){
         for(int i=0;i<size[countDuplicate-2][cS];i++){
-            if(!L.get(i).getFound())L.get(i).setClick(false);
+            if(!L.get(i).getFound()){L.get(i).setClick(false); /*GA.playAnim(i);*/}
         }
         setEnebleThread(false);
     }

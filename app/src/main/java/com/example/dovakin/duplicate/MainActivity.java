@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,10 @@ import android.widget.Toast;
 import static android.R.attr.data;
 
 public class MainActivity extends AppCompatActivity {
+
+    static{
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+    }
 
     String select_size="",select_counterDuplicate="",select_gamestyle="";
 

@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.GridView;
@@ -45,7 +47,7 @@ public class GameActivity extends Activity {
     boolean exit=false;
     MyDialogFragment myDialogFragment;
     int threadcount=0;
-
+    Animation anim = null,tapanim=null;
     GridLayout gl;
 
     @Override
@@ -66,6 +68,7 @@ public class GameActivity extends Activity {
             for(int m=0;m<10;m++) {
                 icon.add(bitmapResize(Bitmap.createBitmap(b, x * n, y * (m+1), x - 2, y),(float)(CTRL.getRow())));
             }
+
         Log.i("y",""+CTRL.getRow());
         CTRL.createList();
         tA=new tileAdapter(this, CTRL.getL());
@@ -81,6 +84,7 @@ public class GameActivity extends Activity {
                                     int position, long id) {
                 // TODO Auto-generated method stub
                 CTRL.checkList(position);
+
                 }
         });
         handler = new Handler() {
@@ -111,7 +115,15 @@ public class GameActivity extends Activity {
 
         myDialogFragment = new MyDialogFragment();
         myDialogFragment.setActivity(this);
+        anim = AnimationUtils.loadAnimation(this,R.anim.scale);
     }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        gridView.startAnimation(anim);
+    }
+
     public Bitmap bitmapResize(Bitmap imageBitmap, float scale) {
 
         Bitmap bitmap = imageBitmap;
@@ -201,5 +213,11 @@ public class GameActivity extends Activity {
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         myDialogFragment.show(transaction, "dialog");
+    }
+    public void startAnim(int n){
+        gridView.getChildAt(n).setAnimation(tapanim);
+    }
+    public void endAnim(int n){
+        gridView.getChildAt(n).setAnimation(tapanim);
     }
 }

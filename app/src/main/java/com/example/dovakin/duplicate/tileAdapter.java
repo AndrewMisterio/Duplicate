@@ -2,9 +2,14 @@ package com.example.dovakin.duplicate;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
@@ -43,10 +48,12 @@ public class tileAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
+
             item = new View(context);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE );
             item = inflater.inflate(R.layout.tile, parent, false);
@@ -59,14 +66,28 @@ public class tileAdapter extends BaseAdapter {
             }
 
             if(products.get(position).getFound()) {
-                im.setVisibility(View.INVISIBLE);
+                im.setImageBitmap(setMonochrome(products.get(position).getImage()));
             }
             im.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             item = (View) convertView;
         }
         item.setId(position);
-
         return item;
+    }
+    private Bitmap setMonochrome(Bitmap src){
+        int width = src.getWidth();
+        int height = src.getHeight();
+
+        Bitmap bitmapResult = Bitmap
+                .createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvasResult = new Canvas(bitmapResult);
+        Paint paint = new Paint();
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.setSaturation(0);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
+        paint.setColorFilter(filter);
+        canvasResult.drawBitmap(src, 0, 0, paint);
+        return bitmapResult;
     }
 }
