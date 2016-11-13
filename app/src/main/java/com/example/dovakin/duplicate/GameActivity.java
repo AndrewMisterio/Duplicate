@@ -40,9 +40,10 @@ public class GameActivity extends Activity {
     Integer counter=0,column=1,countDuplicate=0,gmstl=0;
     tileAdapter tA;
     Handler handler,handlerBar;
-    controller CTRL;
+    static controller CTRL;
     TextView tapView;
     static List<Bitmap> icon = new ArrayList<>();
+    String theme = "dota2";
 
     boolean exit=false;
     MyDialogFragment myDialogFragment;
@@ -57,19 +58,12 @@ public class GameActivity extends Activity {
         load();
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        switch (getIntent().getIntExtra("theme", 0)){
+            case 0:theme="dota2";break;
+            case 1:theme="pokemon";break;
+        }
+        cutImage();
 
-        int x=176,y=203;
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.dota);
-
-        CTRL = new controller(this,counter,countDuplicate, gmstl);
-        icon.clear();
-        icon.add(bitmapResize(Bitmap.createBitmap(b, 0, 0, x - 2, y),(float)(CTRL.getRow())));
-        for(int n=0;n<10;n++)
-            for(int m=0;m<10;m++) {
-                icon.add(bitmapResize(Bitmap.createBitmap(b, x * n, y * (m+1), x - 2, y),(float)(CTRL.getRow())));
-            }
-
-        Log.i("y",""+CTRL.getRow());
         CTRL.createList();
         tA=new tileAdapter(this, CTRL.getL());
         tA.setUnknownItem(getImage(0));
@@ -118,6 +112,34 @@ public class GameActivity extends Activity {
         anim = AnimationUtils.loadAnimation(this,R.anim.scale);
     }
 
+    private void cutImage(){
+        int x,y,n=10,count=112;
+        Bitmap b = null;
+        if(theme.equals("dota2")){
+            b = BitmapFactory.decodeResource(getResources(), R.drawable.dota);
+            n=10;count=112;
+        }
+        if(theme.equals("pokemon")){
+            b = BitmapFactory.decodeResource(getResources(), R.drawable.pokemon);
+            n=9;count=108;
+        }
+        x=b.getWidth()/n;y=b.getHeight()/((count%n==0)?count/n:(count/n+1));
+
+
+
+        CTRL = new controller(this,counter,countDuplicate, gmstl);
+        icon.clear();
+        icon.add(bitmapResize(Bitmap.createBitmap(b, 0, 0, x - 2, y),(float)(CTRL.getRow())));
+        for(int i=0,k=0;i<n;i++)
+            for(int m=0;m<count/n;m++) {
+                Log.i("x"+x,"y"+(m+1));
+                if(k<=count)
+                    icon.add(bitmapResize(Bitmap.createBitmap(b, x * i, y * m, x, y),(float)(CTRL.getRow())));
+                else break;
+            }
+
+    }
+
     @Override
     protected void onStart(){
         super.onStart();
@@ -143,6 +165,7 @@ public class GameActivity extends Activity {
 
         return bitmap;
     }
+
     public Bitmap getImage(int n){
         return icon.get(n);
     }
