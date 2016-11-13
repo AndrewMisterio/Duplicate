@@ -24,4 +24,9 @@
     <string name="youlose">You LOSE!</string>
     <string name="again">Again</string>
     <string name="exit">Exit</string>
+    <string-array name="menu">
+        <item>Main</item>
+        <item>Score</item>
+        <item>Option</item>
+    </string-array>
 </resources>

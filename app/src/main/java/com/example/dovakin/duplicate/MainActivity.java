@@ -1,15 +1,13 @@
 package com.example.dovakin.duplicate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,17 +17,14 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import android.view.ViewGroup.LayoutParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.bitmap;
-import static android.R.attr.data;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends Activity {
 
     static{
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
@@ -43,13 +38,21 @@ public class MainActivity extends AppCompatActivity{
     String select_size="",select_counterDuplicate="",select_gamestyle="";
 
     private SharedPreferences sPref;
-    Spinner spinner1,spinner2,spinner3;
+    Spinner spinner1,spinner2,spinner3, spinnermenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        spinnermenu = (Spinner)findViewById(R.id.spinnermenu);
+        ArrayAdapter<String> adaptermenu = new ArrayAdapter<String>(this, R.layout.menuspinner, getResources().getStringArray(R.array.menu));
+
+        adaptermenu.setDropDownViewResource(R.layout.row);
+
+
+        spinnermenu.setAdapter(adaptermenu);
 
         imageswitcher = (ImageSwitcher) findViewById(R.id.iswitcher);
 
@@ -135,6 +138,7 @@ public class MainActivity extends AppCompatActivity{
         });
         load();
     }
+
 
     public void onClickSwitcher(View v) {
         if (imageindex == listbitmap.size() - 1) {

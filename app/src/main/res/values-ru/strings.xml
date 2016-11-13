@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Дубликат</string>
+    <string name="button_start">СТАРТ</string>
+    <string-array name="size">
+        <item>Маленький</item>
+        <item>Средний</item>
+        <item>Большой</item>
+    </string-array>
+    <string-array name="duplicate">
+        <item>Дубль</item>
+        <item>Трио</item>
+        <item>Квартет</item>
+    </string-array>
+    <string name="complexity">Сложность</string>
+    <string name="countDuplicate">Количество одинаковых</string>
+    <string-array name="gamestyle">
+        <item>Нормальный</item>
+        <item>На время</item>
+        <item>На количество</item>
+    </string-array>
+    <string name="gamestyle">Режим игры</string>
+    <string name="gameover">Конец игры</string>
+    <string name="youwin">Победа!</string>
+    <string name="youlose">Поражение!</string>
+    <string name="again">Еще</string>
+    <string name="exit">Выход</string>
+</resources>
