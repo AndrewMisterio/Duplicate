@@ -219,9 +219,12 @@ public class GameActivity extends Activity {
     }
     private void load(){
         sPref = getSharedPreferences("OPTION", MODE_PRIVATE);
-        counter = Integer.parseInt(sPref.getString("sizeGrid", ""));
-        countDuplicate = Integer.parseInt(sPref.getString("counterDuplicate", ""));
-        gmstl = Integer.parseInt(sPref.getString("gameStyle", ""));
+        String str = sPref.getString("sizeGrid", "");
+        counter = Integer.parseInt((str.equals("")?"0":str));
+        str = sPref.getString("counterDuplicate", "");
+        countDuplicate = Integer.parseInt((str.equals("")?"0":str));
+        str = sPref.getString("gameStyle", "");
+        gmstl = Integer.parseInt((str.equals("")?"0":str));
     }
     public void adapted(){
         gridView.setAdapter(tA);

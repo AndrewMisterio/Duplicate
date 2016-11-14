@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.ViewSwitcher;
 import android.view.ViewGroup.LayoutParams;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     static{
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
@@ -38,21 +40,14 @@ public class MainActivity extends Activity {
     String select_size="",select_counterDuplicate="",select_gamestyle="";
 
     private SharedPreferences sPref;
-    Spinner spinner1,spinner2,spinner3, spinnermenu;
+    Spinner spinner1,spinner2,spinner3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        spinnermenu = (Spinner)findViewById(R.id.spinnermenu);
-        ArrayAdapter<String> adaptermenu = new ArrayAdapter<String>(this, R.layout.menuspinner, getResources().getStringArray(R.array.menu));
-
-        adaptermenu.setDropDownViewResource(R.layout.row);
-
-
-        spinnermenu.setAdapter(adaptermenu);
+        getSupportActionBar().hide();
 
         imageswitcher = (ImageSwitcher) findViewById(R.id.iswitcher);
 
@@ -83,59 +78,6 @@ public class MainActivity extends Activity {
         imageindex = 0;
         imageswitcher.setImageDrawable(listbitmap.get(imageindex).getDrawable());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.size));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinner complexity
-        spinner1 = (Spinner) findViewById(R.id.spinner);
-        spinner1.setAdapter(adapter);
-        spinner1.setSelection(0);
-        select_size="0";
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                select_size=""+position;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-        //spinner number duplucate
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.duplicate));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
-        spinner2.setAdapter(adapter);
-        spinner2.setSelection(0);
-        select_counterDuplicate="0";
-        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                select_counterDuplicate=""+position;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-        //spinner game style
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.gamestyle));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner3 = (Spinner) findViewById(R.id.spinner3);
-        spinner3.setAdapter(adapter);
-        spinner3.setSelection(0);
-        select_gamestyle="0";
-        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                select_gamestyle=""+position;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
         load();
     }
 
